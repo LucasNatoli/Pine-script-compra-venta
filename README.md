@@ -4,7 +4,7 @@ Script Pine para correr en TradingView. Deteta Señales de compra y venta utiliz
 
 ## Cómo utilizarlo
 
-Copiar el script `señales.pine`al editor Pine en  un ventana de TradingView. Grabar el script y agregarlo la Chart.  
+Copiar el contenido del script [`señales.pine`](https://github.com/LucasNatoli/Pine-script-compra-venta/blob/main/sen%CC%83ales.pine) al editor Pine en  un ventana de TradingView. Grabar el script y agregarlo la Chart.  
 
 El script dibujara las señales de Compra (verde) y Venta (rojo) al grafico. 
 
