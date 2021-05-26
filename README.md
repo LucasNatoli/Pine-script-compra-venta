@@ -12,6 +12,8 @@ El script dibujara las señales de Compra (verde) y Venta (rojo) al grafico.
 
 Tambien puede utilizarse como alarma y recibir notificaciones.  
 
+<img src="pine-script-02.png?raw=true" width="444">
+
 ## Funcionamiento
 
 La señal de venta se activa cuando el RSI se encuentra sobrecomprado y el precio de cierre de la vela es mayor o igual a la banda superior de Bollinger.
