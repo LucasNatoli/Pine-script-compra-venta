@@ -1,0 +1,32 @@
+//@version=4
+study(title="Señal Compra/Venta", shorttitle="Señal Compra/Venta", overlay=true)
+
+// Input del usuario
+rsiSource = input(title="RSI Source", type=input.source, defval=close)
+rsiLength = input(title="RSI Length", type=input.integer, defval=14)
+rsiOverbought = input(title="RSI Overbought Level", type=input.integer, defval=70)
+rsiOversold = input(title="RSI Oversold Level", type=input.integer, defval=30)
+
+bbSource = input(title="BB Source", type=input.source, defval=close)
+bbLength  = input(title="BB Length", type=input.integer, defval=20)
+bbMult = input(title="BB Mult", type=input.integer, defval=2)
+
+// Obtener el RSI
+rsiValue = rsi(rsiSource, rsiLength)
+isRsiOB = rsiValue >= rsiOverbought
+isRsiOS = rsiValue <= rsiOversold
+
+// Obtener Bollinger Bands
+[middle, upper, lower] = bb(bbSource, bbLength, bbMult)
+isBBTop = upper <= close
+isBBBottom = lower >= close
+
+isSellSignal = isRsiOB and isBBTop
+isBuySignal = isRsiOS and isBBBottom
+
+// Dibujar las señales en el gráfico
+plotshape(isSellSignal, title="Vender", location=location.abovebar, color=color.new(color.red, 0), style=shape.triangledown, text="Vender")
+plotshape(isBuySignal, title="Comprar", location=location.belowbar, color=color.new(color.green, 0), style=shape.triangleup, text="Comprar")
+
+// Enviar una alerta si esta vela cumple las condiciones.
+alertcondition(isRsiOB or isRsiOS or isBBBottom or isBBTop, title="Señal Activada!", message="Señal Compra/Venta activada para XXX")
