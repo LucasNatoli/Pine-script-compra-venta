@@ -1,53 +1,35 @@
-// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
-// © lucas.natoli
-
-//@version=5
-strategy("RSI+BB Short", overlay=true)
-
+//@version=4
+study(title="Señal Compra/Venta", shorttitle="Señal Compra/Venta", overlay=true)
 
 // Input del usuario
-stopPercent = input(title="Stop Loss %", defval=2.0, tooltip="Porcentaje de cierre a la perdida")
-takeProfitPercent = input(title="Take Profit %", defval=3.0, tooltip="Porcentaje de cierre a la ganancia")
+rsiSource = input(title="RSI Source", type=input.source, defval=close)
+rsiLength = input(title="RSI Length", type=input.integer, defval=14)
+rsiOverbought = input(title="RSI Overbought Level", type=input.integer, defval=70)
+rsiOversold = input(title="RSI Oversold Level", type=input.integer, defval=30)
 
-bbLength  = input(title="BB Length", defval=20)
-bbMult = input(title="BB Mult", defval=2)
-
-rsiLength = input(title="RSI Length", defval=14)
-rsiOverbought = input(title="RSI Overbought Level", defval=70)
-rsiOversold = input(title="RSI Oversold Level", defval=30)
-
-indicatorsSource = input(title="Origen de precios", defval=close)
-
-// One-time values
-var savedShortEntry = 0.0
-var savedShortLimit = 0.0
-var savedShortStop = 0.0
-
-// Obtener Bollinger Bands
-[middle, upper, lower] = ta.bb(indicatorsSource, bbLength, bbMult)
-isBBTop = upper < close
-isBBBottom = lower > close
+bbSource = input(title="BB Source", type=input.source, defval=close)
+bbLength  = input(title="BB Length", type=input.integer, defval=20)
+bbMult = input(title="BB Mult", type=input.integer, defval=2)
 
 // Obtener el RSI
-rsiValue = ta.rsi(indicatorsSource, rsiLength)
-isRsiOB = rsiValue > rsiOverbought
-isRsiOS = rsiValue < rsiOversold
+rsiValue = rsi(rsiSource, rsiLength)
+isRsiOB = rsiValue >= rsiOverbought
+isRsiOS = rsiValue <= rsiOversold
 
-shortSignaled = isBBTop and isRsiOB
+// Obtener Bollinger Bands
+[middle, upper, lower] = bb(bbSource, bbLength, bbMult)
+isBBTop = upper <= close
+isBBBottom = lower >= close
 
-if (shortSignaled)
-    strategy.entry("Top Short", strategy.short)
-    savedShortEntry := close
-    savedShortLimit := savedShortEntry - (savedShortEntry * takeProfitPercent / 100)
-    savedShortStop := savedShortEntry + (savedShortEntry * stopPercent / 100)
+isSellSignal = isRsiOB and isBBTop
+isBuySignal = isRsiOS and isBBBottom
 
+// Dibujar las señales en el gráfico
+plotshape(isSellSignal, title="Vender", location=location.abovebar, color=color.new(color.red, 0), style=shape.triangledown, text="Vender")
+plotshape(isBuySignal, title="Comprar", location=location.belowbar, color=color.new(color.green, 0), style=shape.triangleup, text="Comprar")
 
-
-plot(savedShortEntry, "Entry", color=#ff00ff)
-plot(savedShortLimit, "Limit", color=#00ff00)
-plot(savedShortStop, "Stop", color=#ff0000)
-
-
-//Salir de la estrategia si se alcanza el ShortSellPrice o el ShortStopLoss
-strategy.exit("Top Short Exit", from_entry="Top Short", limit=savedShortLimit, stop=savedShortStop)
-
+p1 = plot(upper, title='Upper', color=#0011ff, linewidth=1)
+p2 = plot(lower, title='Lower', color=#0011ff, linewidth=1)
+p3 = plot(middle, title='Middle', color=#ff0000, linewidth=1)
+// Enviar una alerta si esta vela cumple las condiciones.
+alertcondition(isSellSignal or isBuySignal, title="Señal Activada!", message="Señal Compra/Venta activada para XXX")
