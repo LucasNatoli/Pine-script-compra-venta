@@ -25,11 +25,11 @@ isSellSignal = isRsiOB and isBBTop
 isBuySignal = isRsiOS and isBBBottom
 
 // Dibujar las señales en el gráfico
-plotshape(isSellSignal, title="Vender", location=location.abovebar, color=color.new(color.red, 0), style=shape.triangledown, text="Vender")
-plotshape(isBuySignal, title="Comprar", location=location.belowbar, color=color.new(color.green, 0), style=shape.triangleup, text="Comprar")
+plotshape(isSellSignal, title="SELL", location=location.abovebar, color=color.new(color.red, 0), style=shape.triangledown, size=size.tiny, text="SELL")
+plotshape(isBuySignal, title="BUY", location=location.belowbar, color=color.new(color.green, 0), style=shape.triangleup, size=size.tiny, text="BUY")
 
-p1 = plot(upper, title='Upper', color=#0011ff, linewidth=1)
-p2 = plot(lower, title='Lower', color=#0011ff, linewidth=1)
+p1 = plot(upper, title='Upper', color=#0091ff, linewidth=1)
+p2 = plot(lower, title='Lower', color=#0091ff, linewidth=1)
 p3 = plot(middle, title='Middle', color=#ff0000, linewidth=1)
 // Enviar una alerta si esta vela cumple las condiciones.
 alertcondition(isSellSignal or isBuySignal, title="Señal Activada!", message="Señal Compra/Venta activada para XXX")
