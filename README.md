@@ -1,6 +1,6 @@
 # Señales de Compra y Venta
 
-Deteta Señales de compra y venta utilizando RSI y Bollinger Bands en TradingView.
+Señales de compra y venta utilizando RSI y Bollinger Bands en TradingView.
 
 ## Cómo utilizarlo
 
