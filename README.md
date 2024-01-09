@@ -32,6 +32,8 @@ La señal de compra se activa cuando el RSI se encuentra sobrevendido y el preci
 * Señal: 9
 
 
-Tambien puede utilizarse como alarma y recibir notificaciones.  
+## Integración con Tradingview
+
+Puede utilizarse como alarma y para recibir alertas: popups, email, webhooks, etc.  
 
 <img src="pine-script-02.png?raw=true" width="444">
